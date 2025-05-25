@@ -1,5 +1,40 @@
 
-# Advance Linux Commands Cheatsheet
+# 🐧 Advance Linux Commands Cheatsheet
+
+> A comprehensive and practical collection of advanced Linux commands for developers, sysadmins, and DevOps engineers.
+
+---
+
+## 📚 Table of Contents
+
+1. [Disk Usage](#1-disk-usage)  
+2. [Enable Password Authentication for SSH](#2-enable-password-authentication-for-ssh)  
+3. [awk — Powerful Text Processing](#3-awk--powerful-text-processing)  
+4. [tmux — Terminal Multiplexer](#4-tmux--terminal-multiplexer)  
+5. [dig — DNS Lookup](#5-dig--dns-lookup)  
+6. [watch — Run Command Repeatedly](#6-watch--run-command-repeatedly)  
+7. [chattr — Change File Attributes](#7-chattr--change-file-attributes)  
+8. [sed — Stream Editor](#8-sed--stream-editor)  
+9. [kubectl cp — Kubernetes File Copy](#9-kubernetes-kubectl-cp)  
+10. [sort & uniq — Sort and Remove Duplicates](#10-sort--uniq--sort-and-remove-duplicates)  
+11. [tee — Output to File & Terminal](#11-tee--output-to-file--terminal)  
+12. [Find & Delete Old Files](#12-find--delete-files-older-than-15-days)  
+13. [jq — JSON Processor](#13-jq--json-processor)  
+14. [Networking Commands](#14-networking-commands)  
+15. [lsof — List Open Files](#15-lsof--list-open-files)  
+16. [nc — Port Testing](#16-nc-netcat--port-testing)  
+17. [rsync — Remote File Sync](#17-rsync--remote-file-sync)  
+18. [xargs — Build Commands from Input](#18-xargs--build-command-lines-from-input)  
+19. [journalctl — View Logs](#19-journalctl--view-logs)  
+20. [tcpdump — Capture Packets](#20-tcpdump--capture-packets)  
+21. [crontab — Schedule Jobs](#21-crontab--schedule-jobs)  
+22. [Kubernetes Pod Resource Usage](#22-kubernetes-pod-resource-usage)  
+23. [System Info Commands](#23-system-info-commands)  
+24. [File & Permission Commands](#24-file--permission-commands)  
+25. [nohup — Background Tasks](#25-nohup--run-command-in-background)  
+26. [User Management](#26-user-management)  
+27. [Process Management](#27-process-management)  
+28. [CPU Info](#28-cpu-info)  
 
 ---
 
@@ -7,7 +42,7 @@
 ```bash
 du -sh *
 ```
-Show human-readable disk usage summary of files and directories.
+> Show human-readable disk usage summary of files and directories.
 
 ---
 
@@ -16,11 +51,13 @@ Edit the SSH configuration:
 ```bash
 sudo vi /etc/ssh/sshd_config
 ```
-Set:
+
+Set the following:
 ```nginx
 PasswordAuthentication yes
 ```
-Restart SSH:
+
+Restart the SSH service:
 ```bash
 sudo systemctl restart sshd
 ```
@@ -29,17 +66,17 @@ sudo systemctl restart sshd
 
 ## 3. awk — Powerful Text Processing
 
-### Example 1: Print Specific Columns  
+### 📄 Example 1: Print Specific Columns  
 `employees.txt`:
 ```
 John 28 Developer
 Alice 32 Manager
 Bob 25 Tester
 ```
-Command:
 ```bash
 awk '{print $1, $3}' employees.txt
 ```
+
 Output:
 ```
 John Developer
@@ -47,7 +84,9 @@ Alice Manager
 Bob Tester
 ```
 
-### Example 2: Match a Pattern  
+---
+
+### 🧩 Example 2: Match a Pattern  
 `logs.txt`:
 ```
 INFO Starting service
@@ -55,27 +94,29 @@ ERROR Disk full
 INFO Service running
 ERROR Memory leak
 ```
-Command:
 ```bash
 awk '/ERROR/' logs.txt
 ```
+
 Output:
 ```
 ERROR Disk full
 ERROR Memory leak
 ```
 
-### Example 3: Using Custom Field Separator (CSV)  
+---
+
+### 🧮 Example 3: Using CSV Separator  
 `data.csv`:
 ```
 John,Developer,50000
 Alice,Manager,70000
 Bob,Tester,40000
 ```
-Command:
 ```bash
 awk -F',' '{print $1, $3}' data.csv
 ```
+
 Output:
 ```
 John 50000
@@ -89,7 +130,7 @@ Bob 40000
 ```bash
 tmux new -s mysession
 ```
-Manage multiple terminal sessions easily.
+> Create and manage multiple terminal sessions.
 
 ---
 
@@ -104,7 +145,7 @@ dig google.com +short
 ```bash
 watch -n 2 df -h
 ```
-Runs `df -h` every 2 seconds.
+> Runs `df -h` every 2 seconds.
 
 ---
 
@@ -112,7 +153,7 @@ Runs `df -h` every 2 seconds.
 ```bash
 chattr +i important.txt
 ```
-Make file immutable (cannot be changed or deleted).
+> Make file immutable (protect from changes/deletion).
 
 ---
 
@@ -120,32 +161,33 @@ Make file immutable (cannot be changed or deleted).
 ```bash
 sed -i 's/foo/bar/g' file.txt
 ```
-Replace all “foo” with “bar” in the file.
+> Replace all occurrences of `foo` with `bar`.
 
 ---
 
 ## 9. Kubernetes `kubectl cp`
-Copy files between Kubernetes pods and local system:
+Copy files between Kubernetes pods and your local system:
 
-Pod → Local:
+➡️ Pod → Local:
 ```bash
 kubectl cp -n <namespace> <pod-name>:<path> <local-destination>
 ```
 
-Local → Pod:
+⬅️ Local → Pod:
 ```bash
 kubectl cp -n <namespace> <local-source> <pod-name>:<path>
 ```
 
 Example:
 ```bash
-kubectl cp mynginx-ff886775c-mzjz2:/usr/share/nginx/html/index.html /home/uday/index.html
-kubectl cp /home/uday/index.html mynginx-ff886775c-mzjz2:/usr/share/nginx/html/index.html
+kubectl cp mynginx:/usr/share/nginx/html/index.html ~/index.html
+kubectl cp ~/index.html mynginx:/usr/share/nginx/html/index.html
 ```
 
 ---
 
 ## 10. sort & uniq — Sort and Remove Duplicates
+
 `fruits.txt`:
 ```
 apple
@@ -155,10 +197,10 @@ apple
 banana
 grape
 ```
-Command:
 ```bash
 sort fruits.txt | uniq
 ```
+
 Output:
 ```
 apple
@@ -170,18 +212,12 @@ orange
 ---
 
 ## 11. tee — Output to File & Terminal
-Write output to a file **and** display it on the terminal:
 ```bash
 echo "Hello, welcome!" | tee output.txt
-```
-Append another line:
-```bash
 echo "uday" | tee -a output.txt
-```
-Check file content:
-```bash
 cat output.txt
 ```
+
 Output:
 ```
 Hello, welcome!
@@ -194,7 +230,7 @@ uday
 ```bash
 find /opt/opendj/logs/ -type f -name "errors.*" -mtime +15 -delete
 ```
-Or using `rm`:
+Or:
 ```bash
 find /opt/opendj/logs/ -type f -name "errors.*" -mtime +15 -exec rm -f {} \;
 ```
@@ -202,12 +238,13 @@ find /opt/opendj/logs/ -type f -name "errors.*" -mtime +15 -exec rm -f {} \;
 ---
 
 ## 13. jq — JSON Processor
-Pretty-print JSON:
+
+Pretty print:
 ```bash
-cat data.json | jq .
+jq . data.json
 ```
 
-Example JSON:
+Sample JSON:
 ```json
 {
   "name": "Alice",
@@ -220,26 +257,10 @@ Example JSON:
 }
 ```
 
-Extract a top-level key:
+Extract fields:
 ```bash
 jq '.name' data.json
-```
-Output:
-```
-"Alice"
-```
-
-Extract nested keys:
-```bash
 jq '.address.city' data.json
-```
-Output:
-```
-"New York"
-```
-
-Combine multiple fields:
-```bash
 jq '{person: .name, location: .address.city}' data.json
 ```
 
@@ -247,36 +268,34 @@ jq '{person: .name, location: .address.city}' data.json
 
 ## 14. Networking Commands
 
-### netstat — Show Network Connections
-```bash
-netstat -tuln
-```
+- **netstat** — View network connections  
+  ```bash
+  netstat -tuln
+  ```
 
-### telnet — Network Testing Tool
-```bash
-telnet example.com 80
-```
+- **telnet** — Test connectivity  
+  ```bash
+  telnet example.com 80
+  ```
 
-### dmesg — Kernel Logs
-Displays kernel ring buffer messages:
-```bash
-dmesg
-```
+- **dmesg** — Kernel ring buffer  
+  ```bash
+  dmesg
+  ```
 
-### ping — Test Network Reachability
-```bash
-ping -c 4 google.com
-```
+- **ping** — Test reachability  
+  ```bash
+  ping -c 4 google.com
+  ```
 
-### traceroute — Trace Network Path
-```bash
-traceroute example.com
-```
+- **traceroute** — Trace packet path  
+  ```bash
+  traceroute example.com
+  ```
 
 ---
 
 ## 15. lsof — List Open Files
-List open files on port 80:
 ```bash
 lsof -i :80
 ```
@@ -284,7 +303,6 @@ lsof -i :80
 ---
 
 ## 16. nc (Netcat) — Port Testing
-Test if port 22 (SSH) is open:
 ```bash
 nc -zv 192.168.1.10 22
 ```
@@ -336,44 +354,44 @@ kubectl top pods
 
 ## 23. System Info Commands
 
-### uptime — System Load Average
-```bash
-uptime
-```
+- **uptime** — Load average  
+  ```bash
+  uptime
+  ```
 
-### stat — File Metadata
-```bash
-stat /var/log/syslog
-```
+- **stat** — File metadata  
+  ```bash
+  stat /var/log/syslog
+  ```
 
-### vmstat — Virtual Memory Stats
-```bash
-vmstat 2 5
-```
+- **vmstat** — Memory stats  
+  ```bash
+  vmstat 2 5
+  ```
 
-### free — Memory Usage
-```bash
-free -h
-```
+- **free** — Memory usage  
+  ```bash
+  free -h
+  ```
 
 ---
 
 ## 24. File & Permission Commands
 
-### mount — Mount Filesystem
-```bash
-sudo mount /dev/sdb1 /mnt/usb
-```
+- Mount filesystem:  
+  ```bash
+  sudo mount /dev/sdb1 /mnt/usb
+  ```
 
-### chmod — Change File Permissions
-```bash
-chmod 755 script.sh
-```
+- Change permissions:  
+  ```bash
+  chmod 755 script.sh
+  ```
 
-### chown — Change File Owner
-```bash
-sudo chown john:john /var/www/index.html
-```
+- Change ownership:  
+  ```bash
+  sudo chown john:john /var/www/index.html
+  ```
 
 ---
 
@@ -386,25 +404,25 @@ nohup ./long_script.sh &
 
 ## 26. User Management
 
-### Add User
-```bash
-sudo useradd -m -s /bin/bash devops
-```
+- Add user:  
+  ```bash
+  sudo useradd -m -s /bin/bash devops
+  ```
 
-### Set Password
-```bash
-sudo passwd devops
-```
+- Set password:  
+  ```bash
+  sudo passwd devops
+  ```
 
-### Delete User
-```bash
-sudo userdel -r devops
-```
+- Delete user:  
+  ```bash
+  sudo userdel -r devops
+  ```
 
-### Modify User (Add to Group)
-```bash
-sudo usermod -aG docker devops
-```
+- Add to group:  
+  ```bash
+  sudo usermod -aG docker devops
+  ```
 
 ---
 
@@ -419,3 +437,5 @@ ps aux | less
 ```bash
 lscpu
 ```
+
+---
